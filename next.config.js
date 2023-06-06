@@ -12,7 +12,7 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/updates",
+        source: "/chat",
         destination: "/coming",
         permanent: false,
       },
