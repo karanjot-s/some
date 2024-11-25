@@ -1,13 +1,14 @@
-import { useLogin } from "@/context/Login";
+import { useLogin } from "@/util/LoginContext";
 import { getDateDiff } from "@/utils/dateManip";
 import axios from "axios";
 import Link from "next/link";
 import React from "react";
-import BookmarkIcon from "../icons/bookmark";
 import CommentIcon from "../icons/Comment";
 import LikeIcon from "../icons/Like";
 import ShareIcon from "../icons/Share";
 import UserIcon from "../icons/User";
+import BookmarkIcon from "../icons/Bookmark";
+import Image from "next/image";
 
 const Post = ({ postData }) => {
   const { user } = useLogin();
@@ -15,9 +16,9 @@ const Post = ({ postData }) => {
   if (!postData) return;
   const post = {
     user: {
-      name: postData.name,
-      username: postData.username,
-      avatar: postData.profilePic,
+      name: postData.user ? postData.user.name : postData.name,
+      username: postData.user ? postData.user.username : postData.username,
+      avatar: postData.user ? postData.user.profilePic : postData.profilePic,
     },
     time: new Date(postData.createdAt),
     image: postData.img,
@@ -25,15 +26,25 @@ const Post = ({ postData }) => {
     liked: postData.likes.includes(user._id),
     saved: user.savedPosts.includes(postData._id),
   };
-  // console.log(post);
   return (
-    <div style={{ width: "35rem" }} className="m-auto -mb-40">
+    <div className="m-auto w-full md:w-[35rem] -mb-40">
       <Link
         href={`/u/${post.user.username}`}
         className="flex flex-row justify-between items-center mb-4"
       >
         <div className="flex flex-row">
-          <UserIcon color="#64748B" className="w-12 h-12" />
+          {post.user.avatar ? (
+            <div className="w-10 h-10 m-1 relative rounded-full">
+              <Image
+                src={post.user.avatar}
+                alt=""
+                fill
+                className="object-cover rounded-full"
+              />
+            </div>
+          ) : (
+            <UserIcon color="#64748B" className="w-12 h-12" />
+          )}
           <div className="flex flex-col ml-2">
             <span>{post.user.name}</span>
             <span className="text-slate-400">@{post.user.username}</span>

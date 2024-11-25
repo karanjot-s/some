@@ -1,11 +1,10 @@
 import React from "react";
 
-const SelectionBox = ({ item, allItems, changeItem, hidden }) => {
+const SelectionBox = ({ item, allItems, changeItem, hidden, className }) => {
   return (
     <div
       hidden={hidden}
-      style={{ width: "35rem" }}
-      className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10 px-8"
+      className={`bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10 px-8 w-full md:w-[35rem] ${className}`}
     >
       <div className="relative flex h-full">
         <div

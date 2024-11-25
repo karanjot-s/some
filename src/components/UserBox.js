@@ -1,4 +1,4 @@
-import { useLogin } from "@/context/Login";
+import { useLogin } from "@/util/LoginContext";
 import axios from "axios";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -44,10 +44,7 @@ const UserBox = ({ user, current }) => {
 
   return (
     <>
-      <div
-        style={{ width: "35rem" }}
-        className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10"
-      >
+      <div className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10 w-full md:w-[35rem]">
         {user.profilePic ? (
           <div className="w-20 relative aspect-square m-auto">
             <Image

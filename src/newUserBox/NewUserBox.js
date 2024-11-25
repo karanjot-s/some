@@ -1,4 +1,4 @@
-import { useLogin } from "@/context/Login";
+import { useLogin } from "@/util/LoginContext";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -104,8 +104,7 @@ const NewUserBox = () => {
     return (
       <form
         onSubmit={validateFirst}
-        style={{ width: "35rem" }}
-        className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10"
+        className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10 w-full md:w-[35rem]"
       >
         <span className="block font-bold text-2xl">
           New Here? <u>Create Account now</u>
@@ -184,8 +183,7 @@ const NewUserBox = () => {
   if (signupPage === 1)
     return (
       <form
-        style={{ width: "35rem" }}
-        className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10"
+        className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10 w-full md:w-[35rem]"
         onSubmit={validateSecond}
       >
         <span className="block font-bold text-2xl">
@@ -291,8 +289,7 @@ const NewUserBox = () => {
 
   return (
     <form
-      style={{ width: "35rem" }}
-      className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10"
+      className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10 w-full md:w-[35rem]"
       onSubmit={createAccount}
     >
       <span className="block font-bold text-2xl">

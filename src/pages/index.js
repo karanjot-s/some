@@ -3,7 +3,7 @@ import NewUserBox from "@/newUserBox/NewUserBox";
 import Post from "@/components/utils/Post";
 import SearchBar from "@/components/utils/SearchBar";
 import { getPosts, getUsers } from "@/utils/getData";
-import { useLogin } from "@/context/Login";
+import { useLogin } from "@/util/LoginContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SelectionBox from "@/components/utils/SelectionBox";
@@ -53,7 +53,7 @@ export default function Home() {
 
   return (
     <div className="w-full pt-8">
-      <SearchBar />
+      {/* <SearchBar /> */}
       <AddPost />
 
       <SelectionBox

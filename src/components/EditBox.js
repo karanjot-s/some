@@ -34,8 +34,7 @@ const EditBox = ({ close, user }) => {
 
   return (
     <form
-      style={{ width: "35rem" }}
-      className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10"
+      className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10 w-full md:w-[35rem]"
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit().then(() => {

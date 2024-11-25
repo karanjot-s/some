@@ -1,3 +1,4 @@
+import LoadingIcon from "@/components/icons/Loading";
 import Post from "@/components/utils/Post";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -22,10 +23,15 @@ const PostPage = () => {
 
   console.log(pid);
 
-  if (!post) return <>Loading...</>;
+  if (!post)
+    return (
+      <div className="w-full flex items-center justify-center">
+        <LoadingIcon />
+      </div>
+    );
 
   return (
-    <div style={{ margin: "auto" }}>
+    <div className="m-auto w-full">
       <Post postData={post} />
     </div>
   );

@@ -2,7 +2,7 @@ import UserBox from "@/components/UserBox";
 import Post from "@/components/utils/Post";
 import SearchBar from "@/components/utils/SearchBar";
 import SelectionBox from "@/components/utils/SelectionBox";
-import { useLogin } from "@/context/Login";
+import { useLogin } from "@/util/LoginContext";
 import { getPosts, getUsers } from "@/utils/getData";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -23,7 +23,7 @@ const Profile = () => {
   const { username } = router.query;
 
   const [user, setUser] = useState();
-  const [type, setType] = useState(types.saved);
+  const [type, setType] = useState(types.all);
 
   useEffect(() => {
     if (!username) return;

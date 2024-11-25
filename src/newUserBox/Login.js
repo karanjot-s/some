@@ -46,8 +46,7 @@ const Login = ({ setShowLogin, afterLogin }) => {
         e.preventDefault();
         onLogin();
       }}
-      style={{ width: "35rem" }}
-      className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10"
+      className="bg-slate-800 m-auto rounded-3xl text-center py-8 mt-10 w-full md:w-[35rem]"
     >
       <span className="block font-bold text-2xl">
         Welcome Back, <u>Login below</u>

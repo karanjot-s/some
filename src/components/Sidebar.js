@@ -1,4 +1,4 @@
-import { useLogin } from "@/context/Login";
+import { useLogin } from "@/util/LoginContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,6 +9,8 @@ import ChatIcon from "./icons/Chat";
 import HomeIcon from "./icons/Home";
 import LogoIcon from "./icons/Logo";
 import UserIcon from "./icons/User";
+import SearchIcon from "./icons/Search";
+import BigSearchIcon from "./icons/BigSearch";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -26,17 +28,17 @@ const Sidebar = () => {
   const links = [
     { Icon: HomeIcon, text: "Home", link: "/" },
     { Icon: ChatIcon, text: "Chat", link: "/chat" },
-    { Icon: BellIcon, text: "Updates", link: "/updates" },
+    { Icon: BigSearchIcon, text: "Search", link: "/search" },
   ];
 
   const router = useRouter();
   return (
-    <div className="border-r-2 border-slate-700 px-4 py-2 flex flex-col justify-between items-center fixed h-full left-0 transition-all">
+    <div className="border-slate-700 px-4 py-2 flex items-center fixed transition-all w-full left-0 bottom-0 z-20 bg-slate-900 border-t-2 justify-center gap-8 shadow-md md:shadow-none md:gap-0 md:border-r-2 md:border-t-0 md:w-fit md:h-full md:flex-col md:justify-between">
       <Link
         href="/"
-        className={`flex justify-center items-center text-3xl font-bold text-violet-400`}
+        className={`justify-center items-center text-3xl font-bold text-violet-400 hidden md:flex`}
       >
-        <LogoIcon className="w-20" />
+        <LogoIcon className="w-14" />
         <span
           className={`${
             open ? "w-full" : "w-0"
@@ -45,7 +47,7 @@ const Sidebar = () => {
           SoMe
         </span>
       </Link>
-      <div className="flex justify-center items-start flex-col gap-4">
+      <div className="flex justify-center items-center md:items-start md:flex-col gap-4">
         {links.map((link, ind) => (
           <Link
             key={ind}
@@ -57,7 +59,7 @@ const Sidebar = () => {
             }`}
           >
             <link.Icon
-              className={`w-20 transition duration-300 ${
+              className={`w-14 transition duration-300 ${
                 router.pathname === link.link
                   ? "fill-slate-500"
                   : "fill-slate-400"
@@ -73,9 +75,9 @@ const Sidebar = () => {
           </Link>
         ))}
       </div>
-      <div className="flex justify-center items-center flex-col">
-        <div
-          className="cursor-pointer"
+      <div className="flex justify-center items-center md:flex-col">
+        {/* <div
+          className="cursor-pointer hidden md:flex"
           onClick={() => {
             setOpen((old) => !old);
           }}
@@ -83,14 +85,14 @@ const Sidebar = () => {
           <ArrowIcon
             className={`w-full transition ${open ? "rotate-180" : ""}`}
           />
-        </div>
+        </div> */}
         {user ? (
           <Link
             href={`/u/${user.username}`}
             className={`flex justify-center items-center text-3xl font-bold text-violet-400 gap-2`}
           >
             {user.profilePic ? (
-              <div className="w-16 relative aspect-square m-auto mt-2">
+              <div className="w-14 relative aspect-square m-auto mt-2">
                 <Image
                   src={user.profilePic}
                   className="rounded-full object-cover"
