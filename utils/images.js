@@ -9,6 +9,7 @@ const cloudConfig = () => {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 };
+const folder = process.env.CLOUDINARY_FOLDER;
 
 const memoryStorage = multer.memoryStorage();
 
@@ -24,7 +25,10 @@ const upload = multer({
 const uploadToCloudinary = async (fileString, format) => {
   const { uploader } = cloudinary;
   const res = await uploader.upload(
-    `data:image/${format};base64,${fileString}`
+    `data:image/${format};base64,${fileString}`,
+    {
+      folder: folder || "some",
+    }
   );
   return res;
 };

@@ -3,24 +3,25 @@ const { Schema } = mongoose;
 
 const schema = new Schema(
   {
-    userId: {
-      type: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       require: true,
     },
-    name: {
-      type: String,
-      require: true,
-      default: "no-name",
-    },
-    username: {
-      type: String,
-      require: true,
-    },
-    profilePic: {
-      type: String,
-      require: true,
-      default: "",
-    },
+    // name: {
+    //   type: String,
+    //   require: true,
+    //   default: "no-name",
+    // },
+    // username: {
+    //   type: String,
+    //   require: true,
+    // },
+    // profilePic: {
+    //   type: String,
+    //   require: true,
+    //   default: "",
+    // },
     desc: {
       type: String,
       max: 500,

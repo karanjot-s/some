@@ -8,10 +8,15 @@ const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
+const { Server } = require("socket.io");
+const http = require("http");
+
+const socketHandler = require("./routes/socket");
 const userRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const postRouter = require("./routes/posts");
 const imageRouter = require("./routes/images");
+const searchRouter = require("./routes/search");
 const { cloudConfig } = require("./utils/images");
 
 dotenv.config();
@@ -30,16 +35,26 @@ app.use(helmet()); // security headers
 app.use(morgan("common")); // logger
 app.use(cors());
 
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+io.on("connection", socketHandler);
+
 // routes
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/post", postRouter);
 app.use("/api/image", imageRouter);
+app.use("/api/search", searchRouter);
 
 app.get("/", (req, res) => {
   return res.send("Homepage");
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server Running at ${PORT}`);
 });

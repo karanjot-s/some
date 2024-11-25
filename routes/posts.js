@@ -8,7 +8,7 @@ router.post("/", authenticateToken, async (req, res) => {
   const user = await User.findById(req.user.userId);
   const newPost = new Post({
     ...req.body,
-    userId: user._id,
+    user: user._id,
     name: user.name,
     username: user.username,
     profilePic: user.profilePic,
@@ -80,7 +80,12 @@ router.put("/:id/like", authenticateToken, async (req, res) => {
 // get timeline posts
 router.get("/all", authenticateToken, async (req, res) => {
   try {
-    const posts = await Post.find({});
+    const posts = await Post.find({})
+      .populate({
+        path: "user",
+        select: "name username profilePic",
+      })
+      .sort({ createdAt: -1 });
     return res.status(200).json(posts);
   } catch (err) {
     console.log(err);
@@ -92,13 +97,26 @@ router.get("/all", authenticateToken, async (req, res) => {
 router.get("/followed", authenticateToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
-    const userPosts = await Post.find({ userId: user._id });
+    const userPosts = await Post.find({ user: user._id }).populate({
+      path: "user",
+      select: "name username profilePic",
+    });
     const friendPosts = await Promise.all(
       user.following.map(
-        async (friendId) => await Post.find({ userId: friendId })
+        async (friendId) =>
+          await Post.find({ user: friendId }).populate({
+            path: "user",
+            select: "name username profilePic",
+          })
       )
     );
-    return res.status(200).json(userPosts.concat(...friendPosts));
+    return res
+      .status(200)
+      .json(
+        userPosts
+          .concat(...friendPosts)
+          .sort((a, b) => b.createdAt - a.createdAt)
+      );
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Something went wrong", err: err });
@@ -109,9 +127,12 @@ router.get("/followed", authenticateToken, async (req, res) => {
 router.get("/user/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const posts = await Post.find({ userId: id });
-    console.log(id);
-    console.log(posts);
+    const posts = await Post.find({ user: id })
+      .populate({
+        path: "user",
+        select: "name username profilePic",
+      })
+      .sort({ createdAt: -1 });
     return res.status(200).json(posts);
   } catch (err) {
     console.log(err);
@@ -124,9 +145,16 @@ router.get("/saved", authenticateToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     const posts = await Promise.all(
-      user.savedPosts.map(async (post) => await Post.findById(post))
+      user.savedPosts.map(
+        async (post) =>
+          await Post.findById(post)
+            .populate({
+              path: "user",
+              select: "name username profilePic",
+            })
+            .sort({ createdAt: -1 })
+      )
     );
-    console.log(posts);
     return res.status(200).json(posts);
   } catch (err) {
     console.log(err);
@@ -141,18 +169,19 @@ router.post("/save/:id", authenticateToken, async (req, res) => {
     console.log(id);
     if (!post) return res.status(404).json({ message: "Post not found" });
     const user = await User.findById(req.user.userId);
-    console.log(user.savedPosts);
 
     if (user.savedPosts.includes(id)) {
       await user.updateOne({ $pull: { savedPosts: id } });
       await user.save();
 
-      return res.status(200).json({ message: "Post unsaved successfully" });
+      return res
+        .status(200)
+        .json({ message: "Post unsaved successfully " + id });
     }
     await user.updateOne({ $push: { savedPosts: id } });
     await user.save();
 
-    return res.status(200).json({ message: "Post saved successfully" });
+    return res.status(200).json({ message: "Post saved successfully " + id });
   } catch (err) {
     console.log(err);
     return res.status(500).json("Something went wrong");
@@ -163,7 +192,10 @@ router.post("/save/:id", authenticateToken, async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await Post.findById(id);
+    const post = await Post.findById(id).populate({
+      path: "user",
+      select: "name username profilePic",
+    });
     if (!post) return res.status(404).json({ message: "Post not found" });
     return res.status(200).json(post);
   } catch (err) {
@@ -171,5 +203,7 @@ router.get("/:id", async (req, res) => {
     return res.status(500).json({ message: "Something went wrong", err });
   }
 });
+
+
 
 module.exports = router;
